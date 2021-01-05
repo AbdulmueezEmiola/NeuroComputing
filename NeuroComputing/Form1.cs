@@ -8,25 +8,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace NeuroComputing
 {
     public partial class Form1 : Form
     {
         List<double> signals;
-        List<List<double>> values;
-        List<double> mean;
         List<List<double>> central;
         public Form1()
         {
             InitializeComponent();
             signals = new List<double>();
-            values = new List<List<double>>();
             central = new List<List<double>>();
         }
 
         private void sinusoidCentreButton_Click(object sender, EventArgs e)
-        {           
+        {
+            List<List<double>> values = new List<List<double>>();
             double minFreq = Convert.ToDouble(minFreqTextBox.Text);
             double maxFreq = Convert.ToDouble(maxFreqTextBox.Text);
             double stepFreq = Convert.ToDouble(stepsTextBox.Text);
@@ -40,14 +39,15 @@ namespace NeuroComputing
                     values.Add(GenerateWaves.GenerateSinusoid(count, value));
                     values.Add(GenerateWaves.GenerateCosinusoid(count, value));
                 }
-                mean = Centraling.FindMeans(values);
-                central = Centraling.Centre(values, mean);
+                central = Centraling.Centre(values);
+                
                 string path = saveFileDialog1.FileName;
                 WriteToFile(central, path);
             }
             readFileButton.Enabled = true;
             resultLabel.ForeColor = Color.Blue;
             resultLabel.Text = "Закончил центрирование";
+
         }
 
         private void WriteToFile(List<List<double>> values, string path)
@@ -63,6 +63,14 @@ namespace NeuroComputing
                     }
                     writer.WriteLine(value);
                 }                
+            }
+        }
+        private void WriteToFile(List<double> values, string path)
+        {
+            using (StreamWriter writer = new StreamWriter(path))
+            {
+                writer.WriteLine(string.Join("\n", values));
+                
             }
         }
 
@@ -86,19 +94,14 @@ namespace NeuroComputing
         {
             saveFileDialog2.Title = "Save to file";
             if(saveFileDialog2.ShowDialog() == DialogResult.OK)
-            {
-                if(signals.Count > mean.Count)
+            {                
                 {
-                    labelCovariance.ForeColor = Color.Red;
-                    labelCovariance.Text = "Error: Сигнал имеет длина более чем длина синусойд";
-                }
-                else
-                {
-                    var diff = Centraling.Subtract(signals, mean);
+                    var centered = Centraling.Centre(signals);
+                    WriteToFile(central[9], @"C:\Users\emiol\source\repos\NeuroComputing\NeuroComputing\TextFile4.txt");
                     List<double> list = new List<double>();
                     for (int i = 0; i < central.Count; i++)
                     {
-                        double value = Covariance.FindCovariance(signals, central[i]);
+                        double value = Covariance.FindCovariance(centered, central[i]);
                         list.Add(value);
                     }
                     using (StreamWriter writer = new StreamWriter(saveFileDialog2.FileName))

@@ -33,12 +33,12 @@
             this.resultLabel = new System.Windows.Forms.Label();
             this.minFreqTextBox = new System.Windows.Forms.TextBox();
             this.maxFreqTextBox = new System.Windows.Forms.TextBox();
-            this.stepsTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.NTextBox = new System.Windows.Forms.TextBox();
             this.sinusoidCentreButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
+            this.stepsTextBox = new System.Windows.Forms.TextBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.panel2 = new System.Windows.Forms.Panel();
             this.labelCovariance = new System.Windows.Forms.Label();
@@ -93,13 +93,6 @@
             this.maxFreqTextBox.Size = new System.Drawing.Size(100, 26);
             this.maxFreqTextBox.TabIndex = 4;
             // 
-            // stepsTextBox
-            // 
-            this.stepsTextBox.Location = new System.Drawing.Point(257, 144);
-            this.stepsTextBox.Name = "stepsTextBox";
-            this.stepsTextBox.Size = new System.Drawing.Size(100, 26);
-            this.stepsTextBox.TabIndex = 5;
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -149,6 +142,13 @@
             this.label3.Size = new System.Drawing.Size(47, 20);
             this.label3.TabIndex = 9;
             this.label3.Text = "шаги";
+            // 
+            // stepsTextBox
+            // 
+            this.stepsTextBox.Location = new System.Drawing.Point(257, 144);
+            this.stepsTextBox.Name = "stepsTextBox";
+            this.stepsTextBox.Size = new System.Drawing.Size(100, 26);
+            this.stepsTextBox.TabIndex = 5;
             // 
             // panel2
             // 
@@ -211,7 +211,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 580);
+            this.ClientSize = new System.Drawing.Size(808, 580);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
@@ -231,7 +231,6 @@
         private System.Windows.Forms.Label resultLabel;
         private System.Windows.Forms.TextBox minFreqTextBox;
         private System.Windows.Forms.TextBox maxFreqTextBox;
-        private System.Windows.Forms.TextBox stepsTextBox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox NTextBox;
         private System.Windows.Forms.Button sinusoidCentreButton;
@@ -245,6 +244,7 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog2;
         private System.Windows.Forms.Label labelCovariance;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox stepsTextBox;
     }
 }
 

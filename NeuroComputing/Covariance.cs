@@ -16,7 +16,9 @@ namespace NeuroComputing
             var mean2 = values2.Average();
             for (int i = 0; i < n; i++)
             {
-                value += (values1[i] - mean1) * (values2[i] - mean2);
+                var first = (values1[i] - mean1);
+                var second = (values2[i] - mean2);
+                value +=  first*second ;
             }
             return value / n;
         }
