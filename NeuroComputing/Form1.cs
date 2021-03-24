@@ -16,11 +16,13 @@ namespace NeuroComputing
     {
         List<double> signals;
         List<List<double>> central;
+        List<List<double>> valuesShifted;
         public Form1()
         {
             InitializeComponent();
             signals = new List<double>();
             central = new List<List<double>>();
+            valuesShifted = new List<List<double>>();
         }
 
         private void sinusoidCentreButton_Click(object sender, EventArgs e)
@@ -39,8 +41,7 @@ namespace NeuroComputing
                     values.Add(GenerateWaves.GenerateSinusoid(count, value));
                     values.Add(GenerateWaves.GenerateCosinusoid(count, value));
                 }
-                central = Centraling.Centre(values);
-                
+                central = Centraling.Centre(values);                
                 string path = saveFileDialog1.FileName;
                 WriteToFile(central, path);
             }
@@ -59,7 +60,7 @@ namespace NeuroComputing
                     string value = "";
                     for (int i = 0; i < values.Count; i++)
                     {
-                        value += string.Format("{0:F10}",values[i][j]) + "\t";
+                        value += string.Format("{0:F30}",values[i][j]) + "\t";
                     }
                     writer.WriteLine(value);
                 }                
@@ -97,21 +98,83 @@ namespace NeuroComputing
             {                
                 {
                     var centered = Centraling.Centre(signals);
-                    WriteToFile(central[9], @"C:\Users\emiol\source\repos\NeuroComputing\NeuroComputing\TextFile4.txt");
-                    List<double> list = new List<double>();
+                    List<double> listSin = new List<double>();
+                    List<double> listCosin = new List<double>();
                     for (int i = 0; i < central.Count; i++)
-                    {
+                    {                        
                         double value = Covariance.FindCovariance(centered, central[i]);
-                        list.Add(value);
+                        if (i % 2 == 0)
+                        {
+                            listSin.Add(value);
+                        }
+                        else
+                        {
+                            listCosin.Add(value);
+                        }
                     }
-                    using (StreamWriter writer = new StreamWriter(saveFileDialog2.FileName))
-                    {
-                        writer.WriteLine(string.Join("\n", list));
-                    }
+                    WriteToFile(new List<List<double>> { listCosin, listSin }, saveFileDialog2.FileName);
                     labelCovariance.ForeColor = Color.Blue;
                     labelCovariance.Text = "Ковариации сохранилась";
                 }                
             }
         }
+
+        private void shiftCovarianceButton_Click(object sender, EventArgs e)
+        {
+            saveFileDialog3.Title = "SaveToFile";
+            valuesShifted.Clear();
+            if (saveFileDialog3.ShowDialog() == DialogResult.OK)
+            {
+                for (int i = 0; i < central.Count; i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        valuesShifted.AddRange(GenerateShift(central[i], central[i + 1]));
+                    }
+                }
+                WriteToFile(valuesShifted, saveFileDialog3.FileName);
+                shiftResultLabel.Text = "Закончил Вычисление";
+            }
+        }
+
+        private List<List<double>> GenerateShift(List<double> signalToShiftSin, List<double> signalToShiftCosin)
+        {
+            List<List<double>> values = new List<List<double>>();
+            for (int i = 0; i <= int.Parse(textBoxShift.Text); i+=1)
+            {
+                var signal = Shifting.shift(signalToShiftSin, signalToShiftCosin, i);
+                values.Add(signal.ToList());
+            }
+            return values;
+        }
+
+        private List<double> CovarianceWithShift(List<double> signalToShiftSin, List<double> signalToShiftCosin, List<double> fixedSignal)
+        {
+            List<double> covariances = new List<double>();
+            for(int i = 0; i < signalToShiftSin.Count; i+=100)
+            {
+                var signal = Shifting.shift(signalToShiftSin, signalToShiftCosin, i);
+                double value = Covariance.FindCovariance(fixedSignal, signal.ToList());
+                covariances.Add(value);
+            }
+            return covariances;
+        }
+
+        private void shiftCovariance_Click(object sender, EventArgs e)
+        {
+            saveFileDialog4.Title = "SaveToFile";
+            if (saveFileDialog4.ShowDialog() == DialogResult.OK)
+            {
+                var centered = Centraling.Centre(signals);
+                List<double> covariances = new List<double>();
+                for (int i = 0; i < valuesShifted.Count; i++)
+                {
+                    double value = Covariance.FindCovariance(valuesShifted[i], centered);
+                    covariances.Add(value);
+                }
+                WriteToFile(covariances, saveFileDialog4.FileName);
+            }
+        }
     }
+
 }

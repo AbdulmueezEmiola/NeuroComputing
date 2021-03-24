@@ -41,12 +41,19 @@
             this.stepsTextBox = new System.Windows.Forms.TextBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.shiftResultLabel = new System.Windows.Forms.Label();
+            this.ShiftArrays = new System.Windows.Forms.Button();
             this.labelCovariance = new System.Windows.Forms.Label();
             this.covarianceButton = new System.Windows.Forms.Button();
             this.labelFileName = new System.Windows.Forms.Label();
             this.readFileButton = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog2 = new System.Windows.Forms.SaveFileDialog();
+            this.saveFileDialog3 = new System.Windows.Forms.SaveFileDialog();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBoxShift = new System.Windows.Forms.TextBox();
+            this.shiftCovariance = new System.Windows.Forms.Button();
+            this.saveFileDialog4 = new System.Windows.Forms.SaveFileDialog();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -73,7 +80,7 @@
             // 
             this.resultLabel.AutoSize = true;
             this.resultLabel.ForeColor = System.Drawing.Color.Yellow;
-            this.resultLabel.Location = new System.Drawing.Point(222, 89);
+            this.resultLabel.Location = new System.Drawing.Point(196, 46);
             this.resultLabel.Name = "resultLabel";
             this.resultLabel.Size = new System.Drawing.Size(0, 20);
             this.resultLabel.TabIndex = 2;
@@ -111,7 +118,7 @@
             // 
             // sinusoidCentreButton
             // 
-            this.sinusoidCentreButton.Location = new System.Drawing.Point(14, 76);
+            this.sinusoidCentreButton.Location = new System.Drawing.Point(14, 31);
             this.sinusoidCentreButton.Name = "sinusoidCentreButton";
             this.sinusoidCentreButton.Size = new System.Drawing.Size(148, 47);
             this.sinusoidCentreButton.TabIndex = 8;
@@ -121,6 +128,8 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.textBoxShift);
+            this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.maxFreqTextBox);
             this.panel1.Controls.Add(this.label1);
@@ -152,6 +161,9 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.shiftCovariance);
+            this.panel2.Controls.Add(this.shiftResultLabel);
+            this.panel2.Controls.Add(this.ShiftArrays);
             this.panel2.Controls.Add(this.labelCovariance);
             this.panel2.Controls.Add(this.covarianceButton);
             this.panel2.Controls.Add(this.sinusoidCentreButton);
@@ -163,11 +175,29 @@
             this.panel2.Size = new System.Drawing.Size(775, 337);
             this.panel2.TabIndex = 10;
             // 
+            // shiftResultLabel
+            // 
+            this.shiftResultLabel.AutoSize = true;
+            this.shiftResultLabel.Location = new System.Drawing.Point(186, 295);
+            this.shiftResultLabel.Name = "shiftResultLabel";
+            this.shiftResultLabel.Size = new System.Drawing.Size(0, 20);
+            this.shiftResultLabel.TabIndex = 10;
+            // 
+            // ShiftArrays
+            // 
+            this.ShiftArrays.Location = new System.Drawing.Point(14, 263);
+            this.ShiftArrays.Name = "ShiftArrays";
+            this.ShiftArrays.Size = new System.Drawing.Size(148, 53);
+            this.ShiftArrays.TabIndex = 9;
+            this.ShiftArrays.Text = "Shift Arrays";
+            this.ShiftArrays.UseVisualStyleBackColor = true;
+            this.ShiftArrays.Click += new System.EventHandler(this.shiftCovarianceButton_Click);
+            // 
             // labelCovariance
             // 
             this.labelCovariance.AutoSize = true;
             this.labelCovariance.ForeColor = System.Drawing.Color.Blue;
-            this.labelCovariance.Location = new System.Drawing.Point(182, 259);
+            this.labelCovariance.Location = new System.Drawing.Point(182, 200);
             this.labelCovariance.Name = "labelCovariance";
             this.labelCovariance.Size = new System.Drawing.Size(0, 20);
             this.labelCovariance.TabIndex = 3;
@@ -175,9 +205,9 @@
             // covarianceButton
             // 
             this.covarianceButton.Enabled = false;
-            this.covarianceButton.Location = new System.Drawing.Point(10, 250);
+            this.covarianceButton.Location = new System.Drawing.Point(14, 187);
             this.covarianceButton.Name = "covarianceButton";
-            this.covarianceButton.Size = new System.Drawing.Size(137, 39);
+            this.covarianceButton.Size = new System.Drawing.Size(148, 39);
             this.covarianceButton.TabIndex = 2;
             this.covarianceButton.Text = "Covariance";
             this.covarianceButton.UseVisualStyleBackColor = true;
@@ -187,7 +217,7 @@
             // 
             this.labelFileName.AutoSize = true;
             this.labelFileName.ForeColor = System.Drawing.Color.Blue;
-            this.labelFileName.Location = new System.Drawing.Point(192, 187);
+            this.labelFileName.Location = new System.Drawing.Point(192, 128);
             this.labelFileName.Name = "labelFileName";
             this.labelFileName.Size = new System.Drawing.Size(0, 20);
             this.labelFileName.TabIndex = 1;
@@ -195,9 +225,9 @@
             // readFileButton
             // 
             this.readFileButton.Enabled = false;
-            this.readFileButton.Location = new System.Drawing.Point(11, 175);
+            this.readFileButton.Location = new System.Drawing.Point(14, 104);
             this.readFileButton.Name = "readFileButton";
-            this.readFileButton.Size = new System.Drawing.Size(137, 44);
+            this.readFileButton.Size = new System.Drawing.Size(148, 44);
             this.readFileButton.TabIndex = 0;
             this.readFileButton.Text = "ReadFromFile";
             this.readFileButton.UseVisualStyleBackColor = true;
@@ -207,11 +237,37 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(455, 19);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(102, 20);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Shift Amount";
+            // 
+            // textBoxShift
+            // 
+            this.textBoxShift.Location = new System.Drawing.Point(602, 12);
+            this.textBoxShift.Name = "textBoxShift";
+            this.textBoxShift.Size = new System.Drawing.Size(100, 26);
+            this.textBoxShift.TabIndex = 11;
+            // 
+            // shiftCovariance
+            // 
+            this.shiftCovariance.Location = new System.Drawing.Point(537, 31);
+            this.shiftCovariance.Name = "shiftCovariance";
+            this.shiftCovariance.Size = new System.Drawing.Size(148, 53);
+            this.shiftCovariance.TabIndex = 11;
+            this.shiftCovariance.Text = "Covariance With Shift";
+            this.shiftCovariance.UseVisualStyleBackColor = true;
+            this.shiftCovariance.Click += new System.EventHandler(this.shiftCovariance_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(808, 580);
+            this.ClientSize = new System.Drawing.Size(819, 580);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
@@ -245,6 +301,13 @@
         private System.Windows.Forms.Label labelCovariance;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox stepsTextBox;
+        private System.Windows.Forms.Button ShiftArrays;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog3;
+        private System.Windows.Forms.Label shiftResultLabel;
+        private System.Windows.Forms.TextBox textBoxShift;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button shiftCovariance;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog4;
     }
 }
 
